@@ -1,6 +1,3 @@
-DROP SCHEMA IF EXISTS expence_tracker CASCADE;
-CREATE SCHEMA IF NOT EXISTS expence_tracker;
-
 CREATE TABLE expence_tracker.bank_account_owner (
 	id_ba_own integer PRIMARY KEY,
 	owner_name varchar(50) NOT NULL,
@@ -17,28 +14,16 @@ CREATE TABLE expence_tracker.bank_account_types (
 	ba_desc varchar(250),
 	active boolean NOT NULL DEFAULT TRUE,
 	is_common_account boolean NOT NULL DEFAULT FALSE,
-	id_ba_own integer,
+	id_ba_own integer REFERENCES expence_tracker.bank_account_owner (id_ba_own),
 	insert_date timestamp DEFAULT current_timestamp,
 	update_date timestamp DEFAULT current_timestamp
 );
 
-CREATE TABLE expence_tracker.transactions (
-	id_transaction integer PRIMARY KEY,
-	id_trans_ba integer,
-	id_trans_cat integer,
-	id_trans_subcat integer,
-	id_user integer,
-	transaction_date date DEFAULT current_date,
-	transaction_value dec(9, 2),
-	transaction_description TEXT,
-	insert_date timestamp DEFAULT current_timestamp,
-	update_date timestamp DEFAULT current_timestamp
-	);
 
 CREATE TABLE expence_tracker.transaction_bank_accounts (
 	id_trans_ba integer PRIMARY KEY,
-	id_ba_own integer,
-	id_ba_typ integer,
+	id_ba_own integer REFERENCES expence_tracker.BANK_ACCOUNT_OWNER (ID_BA_OWN),
+	id_ba_typ integer REFERENCES expence_tracker.BANK_ACCOUNT_TYPES (ID_BA_TYPE),
 	bank_account_name varchar(50) NOT NULL,
 	bank_account_desc varchar(250),
 	active boolean DEFAULT TRUE NOT null,
@@ -57,7 +42,7 @@ CREATE TABLE expence_tracker.transaction_category (
 
 CREATE TABLE expence_tracker.transaction_subcategory (
 	id_trans_subcat integer PRIMARY KEY,
-	id_trans_cat integer,
+	id_trans_cat integer REFERENCES expence_tracker.TRANSACTION_CATEGORY (ID_TRANS_CAT),
 	subcategory_name varchar(50) NOT NULL,
 	subcategory_description varchar(250),
 	active boolean DEFAULT TRUE NOT NULL,
@@ -84,3 +69,17 @@ CREATE TABLE expence_tracker.users (
 	insert_date timestamp DEFAULT current_timestamp,
 	update_date timestamp DEFAULT current_timestamp
 );
+
+CREATE TABLE expence_tracker.transactions (
+	id_transaction integer PRIMARY KEY,
+	id_trans_ba integer REFERENCES expence_tracker.TRANSACTION_BANK_ACCOUNTS (ID_TRANS_BA),
+	id_trans_cat integer REFERENCES expence_tracker.TRANSACTION_CATEGORY (ID_TRANS_CAT),
+	id_trans_subcat integer REFERENCES expence_tracker.TRANSACTION_SUBCATEGORY (ID_TRANS_SUBCAT),
+	id_trans_type integer REFERENCES expence_tracker.TRANSACTION_TYPE (ID_TRANS_TYPE),
+	id_user integer REFERENCES expence_tracker.USERS (ID_USER),
+	transaction_date date DEFAULT current_date,
+	transaction_value dec(9, 2),
+	transaction_description TEXT,
+	insert_date timestamp DEFAULT current_timestamp,
+	update_date timestamp DEFAULT current_timestamp
+	);
