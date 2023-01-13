@@ -1,5 +1,5 @@
 CREATE TABLE expence_tracker.bank_account_owner (
-	id_ba_own integer PRIMARY KEY,
+	id_ba_own SERIAL PRIMARY KEY,
 	owner_name varchar(50) NOT NULL,
 	owner_desc varchar(250),
 	user_login integer NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE expence_tracker.bank_account_owner (
 );
 
 CREATE TABLE expence_tracker.bank_account_types (
-	id_ba_type integer PRIMARY KEY,
+	id_ba_type SERIAL PRIMARY KEY,
 	ba_type varchar(50) NOT NULL,
 	ba_desc varchar(250),
 	active boolean NOT NULL DEFAULT TRUE,
@@ -21,7 +21,7 @@ CREATE TABLE expence_tracker.bank_account_types (
 
 
 CREATE TABLE expence_tracker.transaction_bank_accounts (
-	id_trans_ba integer PRIMARY KEY,
+	id_trans_ba SERIAL PRIMARY KEY,
 	id_ba_own integer REFERENCES expence_tracker.BANK_ACCOUNT_OWNER (ID_BA_OWN),
 	id_ba_typ integer REFERENCES expence_tracker.BANK_ACCOUNT_TYPES (ID_BA_TYPE),
 	bank_account_name varchar(50) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE expence_tracker.transaction_bank_accounts (
 );
 
 CREATE TABLE expence_tracker.transaction_category (
-	id_trans_cat integer PRIMARY KEY,
+	id_trans_cat SERIAL PRIMARY KEY,
 	category_name varchar(50) NOT NULL,
 	category_desciption varchar(250),
 	active boolean DEFAULT TRUE NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE expence_tracker.transaction_category (
 );
 
 CREATE TABLE expence_tracker.transaction_subcategory (
-	id_trans_subcat integer PRIMARY KEY,
+	id_trans_subcat SERIAL PRIMARY KEY,
 	id_trans_cat integer REFERENCES expence_tracker.TRANSACTION_CATEGORY (ID_TRANS_CAT),
 	subcategory_name varchar(50) NOT NULL,
 	subcategory_description varchar(250),
@@ -51,7 +51,7 @@ CREATE TABLE expence_tracker.transaction_subcategory (
 );
 
 CREATE TABLE expence_tracker.transaction_type (
-	id_trans_type integer PRIMARY KEY,
+	id_trans_type SERIAL PRIMARY KEY,
 	transaction_type_name varchar(50) NOT NULL,
 	transaction_type_desc varchar(250),
 	active boolean DEFAULT TRUE NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE expence_tracker.transaction_type (
 );
 
 CREATE TABLE expence_tracker.users (
-	id_user integer PRIMARY KEY,
+	id_user SERIAL PRIMARY KEY,
 	user_login varchar(25) NOT NULL,
 	user_name varchar(50) NOT NULL,
 	user_password varchar(100) NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE expence_tracker.users (
 );
 
 CREATE TABLE expence_tracker.transactions (
-	id_transaction integer PRIMARY KEY,
+	id_transaction SERIAL PRIMARY KEY,
 	id_trans_ba integer REFERENCES expence_tracker.TRANSACTION_BANK_ACCOUNTS (ID_TRANS_BA),
 	id_trans_cat integer REFERENCES expence_tracker.TRANSACTION_CATEGORY (ID_TRANS_CAT),
 	id_trans_subcat integer REFERENCES expence_tracker.TRANSACTION_SUBCATEGORY (ID_TRANS_SUBCAT),
